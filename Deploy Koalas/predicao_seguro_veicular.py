@@ -3,22 +3,22 @@ import pandas as pd
 from flask import Flask, render_template, request
 
 # Pastas de template e assets
-app = Flask(__name__, template_folder='template', static_folder='template/assets')
+application = Flask(__name__, template_folder='template', static_folder='template/assets')
 
 # Modelo Treinado
 modelo = pickle.load(open('./models/modelo.pkl', 'rb'))
 
-@app.route('/')
+@application.route('/')
 def home():
     return render_template("homepage.html")
 
 
-@app.route('/predicao_seguro_veicular')
+@application.route('/predicao_seguro_veicular')
 def predicao_seguro_veicular():
     return render_template("form.html")
 
 
-@app.route('/about')
+@application.route('/about')
 def about():
     return render_template("about.html")
 
@@ -39,7 +39,7 @@ def get_data():
     return pd.DataFrame.from_dict(d_dict, orient='columns')
 
 
-@app.route('/send', methods=['POST'])
+@application.route('/send', methods=['POST'])
 def show_data():
     df = get_data()
     df['Annual_Premium'] = df['Annual_Premium'].astype('float32')
@@ -61,4 +61,4 @@ def show_data():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    application.run(debug=True)
